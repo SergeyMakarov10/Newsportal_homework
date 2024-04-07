@@ -19,6 +19,9 @@ category4 = Category.objects.create(category_name='Наука')
 article1 = Post.objects.create(author=author1, category_type='AR', title='Статья 1', text='Текст 1')
 article2 = Post.objects.create(author=author2, category_type='AR', title='Статья 2', text='Текст 2')
 news1 = Post.objects.create(author=author2, category_type='NW', title='Новость 1', text='Текст Новости 1')
+news2 = Post.objects.create(author=Author.objects.get(id=2), category_type='NW', title='Новость 2', text='Оппозиция заявила о митинге')
+Post.objects.filter(id=4).update(text='Оппозиция заявила о митинге')
+
 
 # 5. Присвоить им категории (как минимум в одной статье/новости должно быть не меньше 2 категорий).
 PostCategory.objects.create(post=article1, category=category1)
