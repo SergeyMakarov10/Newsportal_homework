@@ -38,17 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'django_filters',
-
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
-    # # провайдеры, для allauth:
-    # 'allauth.socialaccount.providers.google',
-    #
     'django.contrib.sites',
-    # 'django_apscheduler',
     'django.contrib.flatpages',
+    'django_filters',
 
     'news',
     'accounts',

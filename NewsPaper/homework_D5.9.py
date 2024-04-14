@@ -21,6 +21,14 @@ article2 = Post.objects.create(author=author2, category_type='AR', title='Ста
 news1 = Post.objects.create(author=author2, category_type='NW', title='Новость 1', text='Текст Новости 1')
 news2 = Post.objects.create(author=Author.objects.get(id=2), category_type='NW', title='Новость 2', text='Оппозиция заявила о митинге')
 Post.objects.filter(id=4).update(text='Оппозиция заявила о митинге')
+news3 = Post.objects.create(author=Author.objects.get(id=1), category_type='NW', title='Новость 3', text='Текст Новости 3,Текст Новости 3,Текст Новости 3,Текст Новости 3')
+news4 = Post.objects.create(author=Author.objects.get(id=2), category_type='NW', title='Новость 4', text='Текст Новости 4,Текст Новости 4,Текст Новости 4')
+article3 = Post.objects.create(author=Author.objects.get(id=1), category_type='AR', title='Статья 3', text='Текст Статьи 3')
+article4 = Post.objects.create(author=Author.objects.get(id=2), category_type='AR', title='Статья 4', text='Текст Статьи 4,Текст Статьи 4,Текст Статьи 4,Текст Статьи 4,Текст Статьи 4,Текст Статьи 4')
+article5 = Post.objects.create(author=Author.objects.get(id=2), category_type='AR', title='Статья 5', text='Текст Статьи 5')
+article6 = Post.objects.create(author=Author.objects.get(id=2), category_type='AR', title='Статья 6', text='Текст Статьи 6')
+news5 = Post.objects.create(author=Author.objects.get(id=1), category_type='NW', title='Новость 5', text='Текст Новости 5')
+news6 = Post.objects.create(author=Author.objects.get(id=1), category_type='NW', title='Новость 6', text='Текст Новости 6')
 
 
 # 5. Присвоить им категории (как минимум в одной статье/новости должно быть не меньше 2 категорий).

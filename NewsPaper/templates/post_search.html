@@ -1,0 +1,53 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+    PostSearch
+{% endblock title %}
+
+
+{% block content %}
+
+    <h1>Поиск публикаций</h1>
+    <h3>Всего публикаций: {{ posts|length }}</h3>
+    <form method='GET'>
+        {{ filter.form }}
+        <input class="btn btn-primary" type='submit' value='Найти'>
+    </form>
+        <table>
+            <thead>
+                <th>
+                    Заголовок
+                </th>
+                <th>
+                    Дата публикации
+                </th>
+                <th>
+                    Содержание
+                </th>
+                <th>
+                    Автор
+                </th>
+            </thead>
+            {% for post in filter.qs %}
+                <tr>
+                    <td>
+                        <a>{{ post.title|censor }}</a>
+                    </td>
+                    <td>
+                        {{ post.creation_date|date:'d.m.Y' }}
+                    </td>
+                    <td>
+                        {{ post.text|truncatechars:20|censor }}
+                    </td>
+                    <td>
+                        {{ post.author.author_user }}
+                    </td>
+                </tr>
+            {% endfor %}
+
+        </table>
+
+{% endblock content %}
+

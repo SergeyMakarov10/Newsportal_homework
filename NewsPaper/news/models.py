@@ -2,12 +2,16 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
 from .resources import *
-# Create your models here.
+from django.urls import reverse
 
 
 class Author (models.Model):
     author_user = models.OneToOneField(User, on_delete=models.CASCADE)
     author_rating = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.author_user.username
+
 
     def update_rating(self):
         post_rating = self.post_set.all().aggregate(rating_sum=Sum('rating'))['rating_sum']
@@ -22,6 +26,8 @@ class Author (models.Model):
 class Category (models.Model):
     category_name = models.CharField(max_length=64, unique=True)
 
+    def __str__(self):
+        return self.category_name
 
 class Post (models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name='Автор')
@@ -31,6 +37,7 @@ class Post (models.Model):
     title = models.CharField(max_length=128, verbose_name='Заголовок')
     text = models.TextField(verbose_name='Текст')
     rating = models.IntegerField(default=0, verbose_name='Рейтинг')
+
 
     def like(self):
         self.rating += 1
@@ -45,6 +52,12 @@ class Post (models.Model):
         if len(self.text) > 124:
             text += '...'
         return text
+
+    def __str__(self):
+        return f'{self.title.title()}: {self.text[:20]}'
+
+    def get_absolute_url(self):
+        return reverse('post_detail', args=[str(self.id)])
 
 
 class PostCategory (models.Model):
