@@ -12,7 +12,6 @@ class Author (models.Model):
     def __str__(self):
         return self.author_user.username
 
-
     def update_rating(self):
         post_rating = self.post_set.all().aggregate(rating_sum=Sum('rating'))['rating_sum']
         user_rating = self.author_user.comment_set.all().aggregate(rating_sum=Sum('rating'))['rating_sum']
@@ -25,9 +24,11 @@ class Author (models.Model):
 
 class Category (models.Model):
     category_name = models.CharField(max_length=64, unique=True)
+    subscribers = models.ManyToManyField(User, blank=True, null=True, related_name='categories')
 
     def __str__(self):
         return self.category_name
+
 
 class Post (models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE, verbose_name='Автор')
@@ -37,7 +38,6 @@ class Post (models.Model):
     title = models.CharField(max_length=128, verbose_name='Заголовок')
     text = models.TextField(verbose_name='Текст')
     rating = models.IntegerField(default=0, verbose_name='Рейтинг')
-
 
     def like(self):
         self.rating += 1

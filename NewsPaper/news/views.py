@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, \
      TemplateView
@@ -7,6 +7,7 @@ from .filters import PostFilter
 from .forms import PostForm
 from .resources import *
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 
 class PostList(ListView):
@@ -106,3 +107,30 @@ class ArticleDelete(PermissionRequiredMixin, DeleteView):
     template_name = 'article_delete.html'
     success_url = reverse_lazy('news')
     permission_required = ('news.delete_post',)
+
+
+class CategoryList(PostList):
+    model = Post
+    template_name = 'category_list.html'
+    context_object_name = 'category_news_list'
+
+    def get_queryset(self):
+        self.post_category = get_object_or_404(Category, id=self.kwargs['pk'])
+        queryset = Post.objects.filter(post_category=self.post_category).order_by('-creation_date')
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_not_subscriber'] = self.request.user not in self.post_category.subscribers.all()
+        context['category'] = self.post_category
+        return context
+
+
+@login_required
+def subscribe(request, pk):
+    user = request.user
+    category = Category.objects.get(id=pk)
+    category.subscribers.add(user)
+
+    message = 'Вы успешно подписались на рассылку новостей категории'
+    return render(request, 'subscribe.html', {'category': category, 'message': message})
